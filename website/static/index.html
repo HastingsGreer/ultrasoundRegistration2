@@ -1,0 +1,32 @@
+Begin the Ultrasound Scan at any time</br>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<button id="save">Scan Complete</button>
+<script type="text/javascript">
+    events = []
+
+    $("#save").click(function () {
+        $.ajax({
+            type: "POST",
+            contentType: "application/json; charset=utf-8",
+            url: "/upload",
+            data: JSON.stringify(events),
+            datatype: "json"
+        });
+        //events = []
+    })
+
+    if (window.DeviceOrientationEvent) {
+        document.writeln("registering event")
+        window.addEventListener('deviceorientation', function (evt) {
+            events.push({
+                time: Date.now() / 1000,
+                alpha: evt.alpha,
+                beta: evt.beta,
+                gamma: evt.gamma
+            });
+            
+        })
+    } else {
+        document.write("No DeviceOrientationEvent")
+    }
+</script>
